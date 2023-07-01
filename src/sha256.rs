@@ -33,6 +33,12 @@ const K: [u32; 64] = [
    0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
 ];
 
+pub fn sha256(msg: &[u8]) -> Digest {
+    let mut hasher = Sha256::new();
+    hasher.update(msg);
+    hasher.finalize()
+}
+
 pub struct Sha256 {
     h0: u32,
     h1: u32,
@@ -68,15 +74,15 @@ impl Sha256 {
         }
     }
 
-    pub fn update(&mut self, bytes: &[u8]) {
-        self.msgbytelen += bytes.len();
+    pub fn update(&mut self, msg: &[u8]) {
+        self.msgbytelen += msg.len();
 
-        if self.restlen + bytes.len() < CHUNK_LEN {
-            self.rest[self.restlen..(self.restlen + bytes.len())].copy_from_slice(bytes);
-            self.restlen += bytes.len();
+        if self.restlen + msg.len() < CHUNK_LEN {
+            self.rest[self.restlen..(self.restlen + msg.len())].copy_from_slice(msg);
+            self.restlen += msg.len();
             return;
         }
-        let mut bytes = bytes;
+        let mut bytes = msg;
 
         let (left, right) = bytes.split_at(CHUNK_LEN - self.restlen);
         self.rest[self.restlen..].copy_from_slice(left);
@@ -131,7 +137,7 @@ impl Sha256 {
         digest[20..24].copy_from_slice(&self.h5.to_be_bytes());
         digest[24..28].copy_from_slice(&self.h6.to_be_bytes());
         digest[28..32].copy_from_slice(&self.h7.to_be_bytes());
-        Digest { digest }
+        Digest(digest)
     }
 
     fn chunk_rest(&mut self) {
@@ -209,20 +215,18 @@ impl Default for Sha256 {
     }
 }
 
-pub struct Digest {
-    digest: [u8; DIGEST_LEN],
-}
+pub struct Digest([u8; DIGEST_LEN]);
 
 impl Digest {
     pub fn to_hex(&self) -> String {
         let mut hex = String::with_capacity(DIGEST_LEN * 2);
-        for byte in &self.digest {
+        for byte in &self.0 {
             hex.push_str(&format!("{:02x}", byte));
         }
         hex
     }
     pub fn to_bytes(&self) -> [u8; DIGEST_LEN] {
-        self.digest
+        self.0
     }
 }
 
