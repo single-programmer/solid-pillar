@@ -2,7 +2,7 @@
 //!
 //! # Example
 //! ```rust
-//! use solid_pillar::sha512::Sha512;
+//! use solid_pillar::primitives::sha512::Sha512;
 //!
 //! let mut hasher = Sha512::new();
 //! hasher.update(b"Hello, ");
@@ -304,7 +304,7 @@ impl Digest {
 
 #[cfg(test)]
 mod tests {
-    use crate::sha512::CHUNK_LEN;
+    use super::*;
 
     #[test]
     fn empty() {

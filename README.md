@@ -1,3 +1,3 @@
 # solid-pillar
 
-Crypto primitives
+Crypto primitives in pure Rust, with no unsafe code.

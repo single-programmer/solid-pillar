@@ -2,7 +2,7 @@
 //!
 //! # Examples
 //! ```rust
-//! use solid_pillar::x25519::{new_keypair, PublicKey, SecretKey, KeyData};
+//! use solid_pillar::primitives::x25519::{new_keypair, PublicKey, SecretKey, KeyData};
 //!
 //! let (alice_sk, alice_pk) = new_keypair();
 //! let (bob_sk, bob_pk) = new_keypair();

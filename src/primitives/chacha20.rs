@@ -2,7 +2,7 @@
 //!
 //! # Examples
 //! ```rust
-//! use solid_pillar::chacha20::ChaCha20KeyStream;
+//! use solid_pillar::primitives::chacha20::ChaCha20KeyStream;
 //!
 //! let key = [
 //!   0x00, 0x01, 0x02, 0x03,
